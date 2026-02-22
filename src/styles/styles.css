@@ -1,0 +1,1269 @@
+/* =========================
+   GLOBAL
+========================= */
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+}
+
+body {
+  margin: 0;
+  font-family: "Merriweather", serif;
+  /* //background-color: #eef6ee; */
+  color: #2f5d3a;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent text size adjustment on iOS */
+}
+
+/* Override body background for hero section parent */
+.app-root {
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+/* =========================
+   PAGE ROOTS
+========================= */
+.event-page-root,
+.story-page-root,
+.summary-page-root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* horizontal center */
+  align-items: center;
+  /* vertical center */
+  flex-direction: column;
+  position: relative;
+  /* needed for overlays/watermark */
+  padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 3vw, 1rem);
+  /* minimal vertical spacing */
+  margin: 0 auto;
+  /* center horizontally */
+  max-width: 1200px;
+  /* cap width on large screens */
+  border-radius: 1rem;
+  /* rounded edges */
+  overflow: hidden;
+  /* keeps overlays inside */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.event-page-root {
+  background: linear-gradient(135deg, #e8f3f1, #f8c8dc);
+  min-height: 100vh;
+}
+
+/* .story-page-root {
+  background: linear-gradient(135deg, #e8f3f1, #f8c8dc);
+} */
+
+.summary-page-root {
+  /* Lavender to Peach for a soft romantic vibe */
+  background: linear-gradient(135deg, #e6d6f5, #ffe5d9);
+}
+
+
+.hero-page-root {
+  position: relative;
+  /* needed for layering */
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* background carousel handled in React (Hero.jsx) */
+.hero-page-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* REMOVE static background here if using React carousel */
+  /* background: url("src/assets/Media (7).png") center / cover no-repeat; */
+  z-index: 0;
+}
+
+.hero-page-root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  /* optional overlay */
+  z-index: 1;
+}
+
+.wrapper {
+  padding-top: 100px;
+  position: relative;
+  z-index: 5;
+  /* keeps text above background */
+  text-align: center;
+  color: white;
+  display: inline-block;
+  padding: 2rem 3rem;
+}
+
+/* Default: no blurred background on laptops/desktops */
+.wrapper::before {
+  content: none;
+}
+
+/* On smaller devices (below 1024px) show blurred background */
+@media (max-width: 800px) {
+  .wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    /* semi-transparent white */
+    backdrop-filter: blur(20px);
+    /* frosted blur effect */
+    -webkit-backdrop-filter: blur(20px);
+    /* Safari support */
+    border-radius: 12px;
+    /* optional rounded corners */
+    z-index: -1;
+    /* behind the text */
+  }
+}
+
+/* .hero-page-root .content-wrapper {
+  position: relative;
+  z-index: 2;
+} */
+
+/* =========================
+   CONTENT WRAPPER
+========================= */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 5vw, 3rem);
+  background: transparent;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* =========================
+   COMMON CARD
+========================= */
+.invite-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 780px;
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 1s ease forwards;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   HERO
+========================= */
+
+/* --- Invite Header (EventsPage) --- */
+.invite-header {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1rem);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.invite-tagline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #2f5d3a;
+  margin: 0 0 clamp(1rem, 3vw, 1.5rem) 0;
+  text-align: center;
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+.invite-subtagline {
+  font-family: 'Merriweather', serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: #4f7d5c;
+  margin: clamp(1rem, 3vw, 1.5rem) 0 0 0;
+  text-align: center;
+  line-height: 1.6;
+  max-width: 600px;
+  word-wrap: break-word;
+  padding: 0 1rem;
+}
+
+/* --- A & A ICON --- */
+.aa-icon {
+  font-family: "Great Vibes", cursive;
+  /* Elegant script font */
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  /* Responsive size */
+  color: #d4af37;
+  /* Gold tone */
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  /* Glow for visibility */
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+
+/* =========================
+   HERO CAROUSEL SUPPORT
+========================= */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  /* Soft teal-gray gradient */
+  background: #ebeaf5;
+}
+
+.hero-slider {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  position: relative;
+}
+
+.hero-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Slick Dots Styling */
+.hero-slider .slick-dots {
+  bottom: 30px;
+  z-index: 10;
+}
+
+.hero-slider .slick-dots li button:before {
+  font-size: 12px;
+  color: white;
+  opacity: 0.5;
+}
+
+.hero-slider .slick-dots li.slick-active button:before {
+  color: white;
+  opacity: 1;
+}
+
+/* Slick Arrow Styling */
+.hero-slider .slick-prev,
+.hero-slider .slick-next {
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+}
+
+.hero-slider .slick-prev {
+  left: 25px;
+}
+
+.hero-slider .slick-next {
+  right: 25px;
+}
+
+.hero-slider .slick-prev:before,
+.hero-slider .slick-next:before {
+  font-size: 40px;
+  opacity: 0.75;
+}
+
+.hero-slider .slick-prev:hover:before,
+.hero-slider .slick-next:hover:before {
+  opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+  .hero-slider .slick-prev,
+  .hero-slider .slick-next {
+    display: none !important;
+  }
+
+  .hero-slider .slick-dots {
+    bottom: 20px;
+  }
+}
+
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+}
+
+/* Content wrapper positioning */
+.hero-section .content-wrapper {
+  position: relative;
+  z-index: 3;
+  padding: clamp(3rem, 8vw, 6rem) 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  z-index: 1;
+
+}
+
+/* Glass-morphism card for hero content */
+.hero-content-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 4rem);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  text-align: center;
+  max-width: 700px;
+  animation: floatIn 1.5s ease-in-out;
+  z-index: 3;
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hero content styling */
+.hero-title,
+.hero-subtitle {
+  position: relative;
+  z-index: 3;
+  /* keep text above overlay */
+  margin: 0;
+}
+
+.hero-title {
+  position: relative;
+  /* allow pseudo-element positioning */
+  font-family: 'Pinyon Script', cursive;
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  text-align: center;
+  color: #d4af37;
+  /* text stays white */
+  z-index: 1;
+}
+
+.hero-title::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  /* background: rgba(0, 0, 0, 0.7); */
+  /* dark background */
+  filter: blur(20px);
+  /* soft blur effect */
+  border-radius: 20px;
+  /* optional: rounded glow */
+  z-index: -1;
+  /* push behind the text */
+}
+
+
+/* For larger screens (laptops/desktops) */
+@media (min-width: 800px) {
+  .hero-title {
+    color: white;
+  }
+}
+
+.hero-subtitle {
+  /* font-family: 'Playfair Display', serif; */
+  font-size: clamp(0.9rem, 2.6vw, 1.3rem);
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+
+  /* Subtle gold tone */
+  color: #d4af37;
+  /* text-shadow:
+    1px 1px 4px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(201, 162, 77, 0.5); */
+}
+
+@media (min-width: 800px) {
+  .hero-subtitle {
+    color: white;
+    text-shadow:
+      2px 2px 6px rgba(0, 0, 0, 0.6),
+      0 0 12px rgba(255, 255, 255, 0.8);
+  }
+}
+
+
+/* Swiper pagination customization */
+.hero-swiper .swiper-pagination {
+  z-index: 10;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background: #ffffff;
+  opacity: 0.6;
+  width: 12px;
+  height: 12px;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #fff;
+  transform: scale(1.2);
+}
+
+/* Swiper navigation buttons */
+.hero-swiper .swiper-button-prev,
+.hero-swiper .swiper-button-next {
+  color: #ffffff;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.hero-swiper .swiper-button-prev:hover,
+.hero-swiper .swiper-button-next:hover {
+  opacity: 1;
+}
+
+
+/* =========================
+   COUNTDOWN
+========================= */
+.countdown-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.8rem, 3vw, 1.5rem);
+  margin: 2rem auto 0 auto;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.count-card {
+  width: clamp(80px, 20vw, 120px);
+  height: clamp(100px, 25vw, 140px);
+  background: linear-gradient(135deg, #fff8e7 0%, #fef5e7 100%);
+  border: 2px solid #d4af37;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15);
+  animation: fadeUp 0.8s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.count-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(212, 175, 55, 0.25);
+  border-color: #c9a24d;
+}
+
+.count-value {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  color: #d4af37;
+  line-height: 1;
+  text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.2);
+}
+
+.count-label {
+  margin-top: 0.6rem;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4f7d5c;
+  font-weight: 600;
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+.section-title {
+  font-size: clamp(1.6rem, 4vw, 1.9rem);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVE BREAKPOINTS
+========================= */
+
+/* Mobile Small (320px - 480px) */
+@media (max-width: 480px) {
+  .hero-section {
+    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    /* iOS fix */
+  }
+
+
+  .hero-slide-img {
+    width: 100%;
+    height: auto;
+    /* let height adjust naturally */
+    max-height: 70vh;
+    min-height: -webkit-fill-available;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  .hero-slide-img {
+    width: 100vw;
+    max-width: 100%;
+  }
+
+  .hero-content-card {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    max-width: 90%;
+    margin: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem !important;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.75rem !important;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+  }
+
+  /* Hide navigation arrows on small mobile */
+  .hero-swiper .swiper-button-prev,
+  .hero-swiper .swiper-button-next {
+    display: none;
+  }
+
+  /* Make pagination more prominent */
+  .hero-swiper .swiper-pagination {
+    bottom: 20px !important;
+  }
+
+  .hero-swiper .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+  }
+
+  .hero-section .content-wrapper {
+    padding: 2rem 0.5rem;
+  }
+
+  .aa-watermark {
+    font-size: 6rem;
+  }
+
+  .count-card {
+    width: 80px;
+    height: 100px;
+  }
+
+  .count-value {
+    font-size: 1.8rem;
+  }
+
+  .count-label {
+    font-size: 0.7rem;
+  }
+
+  .event-page-root,
+  .story-page-root,
+  .summary-page-root {
+    padding: 2rem 1rem;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .invite-header {
+    padding: 1rem 0.5rem;
+  }
+
+  .invite-tagline {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .invite-subtagline {
+    font-size: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .invite-card {
+    padding: 1.5rem 1rem;
+    border-radius: 15px;
+  }
+
+  .invite-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .invite-card h4 {
+    font-size: 1rem;
+  }
+
+  .invite-calendar {
+    padding: 0.6rem 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .calendar-day {
+    font-size: 1.5rem;
+  }
+
+  .calendar-month {
+    font-size: 1rem;
+  }
+
+  .calendar-year {
+    font-size: 0.9rem;
+  }
+
+  .btn-reception {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .page-divider {
+    width: 90%;
+    margin: 2rem auto;
+  }
+
+  .page-divider span {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile Medium (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+
+  .hero-swiper,
+  .hero-swiper .swiper-slide,
+  .hero-slide-img {
+    height: 100vh !important;
+  }
+
+  .hero-content-card {
+    padding: 2.5rem 2rem;
+    max-width: 85%;
+  }
+
+  .invite-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .invite-tagline {
+    font-size: 2.2rem;
+  }
+
+  .invite-subtagline {
+    font-size: 1.1rem;
+  }
+
+  .hero-title {
+    font-size: 2.6rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+    letter-spacing: 2px;
+  }
+
+  /* Show navigation arrows but smaller */
+  .hero-swiper .swiper-button-prev,
+  .hero-swiper .swiper-button-next {
+    width: 35px;
+    height: 35px;
+  }
+
+  .hero-swiper .swiper-button-prev::after,
+  .hero-swiper .swiper-button-next::after {
+    font-size: 20px;
+  }
+
+  .count-card {
+    width: 100px;
+    height: 120px;
+  }
+
+  .invite-card {
+    max-width: 90%;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-content-card {
+    padding: 3rem 2.5rem;
+    max-width: 650px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem !important;
+  }
+
+  .content-wrapper {
+    padding: 3rem 2rem;
+  }
+
+  .event-page-root,
+  .story-page-root,
+  .summary-page-root {
+    max-width: 95%;
+    text-align: center;
+  }
+
+  .invite-header {
+    padding: 2rem 1.5rem;
+  }
+
+  .invite-card {
+    max-width: 700px;
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .content-wrapper {
+    max-width: 1000px;
+  }
+
+  .hero-content-card {
+    padding: 4rem 3.5rem;
+  }
+
+  .hero-swiper .swiper-button-prev,
+  .hero-swiper .swiper-button-next {
+    width: 50px;
+    height: 50px;
+  }
+
+  .hero-swiper .swiper-button-prev::after,
+  .hero-swiper .swiper-button-next::after {
+    font-size: 30px;
+  }
+}
+
+/* Landscape orientation fixes for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero-section {
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+  .hero-swiper,
+  .hero-swiper .swiper-slide,
+  .hero-slide-img {
+    height: 100vh !important;
+    min-height: 100vh;
+  }
+
+  .hero-content-card {
+    padding: 1.5rem 2rem;
+    margin: 1rem auto;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.8rem !important;
+    letter-spacing: 2px;
+  }
+
+  .hero-section .content-wrapper {
+    padding: 1rem;
+  }
+
+  .hero-swiper .swiper-pagination {
+    bottom: 10px !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+
+  .hero-swiper .swiper-button-prev,
+  .hero-swiper .swiper-button-next {
+    opacity: 0.5;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-swiper .swiper-button-prev:active,
+  .hero-swiper .swiper-button-next:active {
+    opacity: 1;
+  }
+
+  .btn-reception {
+    padding: 1rem 1.8rem;
+    font-size: 1rem;
+  }
+
+  .count-card {
+    transition: none;
+    /* Remove hover effects on touch */
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+  .hero-title,
+  .hero-subtitle {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* =========================
+   DIVIDERS
+========================= */
+.page-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: clamp(2rem, 4vw, 3rem) auto;
+  width: 80%;
+  max-width: 600px;
+}
+
+.page-divider::before,
+.page-divider::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+}
+
+.page-divider span {
+  margin: 0 clamp(0.5rem, 2vw, 1rem);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: #d4af37;
+}
+
+.page-divider2 {
+  width: clamp(50%, 60%, 80%);
+  margin: clamp(2rem, 4vw, 3rem) auto;
+  border-top: 2px solid #d4af37;
+  border-bottom: 2px solid #f8c8dc;
+  border-radius: 50px;
+  height: 6px;
+}
+
+.page-divider3 {
+  text-align: center;
+  margin: clamp(2rem, 4vw, 3rem) auto;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  color: #c9a24d;
+  letter-spacing: clamp(0.2rem, 1vw, 0.5rem);
+  padding: 0 1rem;
+}
+
+.page-divider3::before {
+  content: "✿ ✿ ✿ ❧ ✿ ✿ ✿";
+}
+
+/* --- Location Label --- */
+/* --- Headings --- */
+.invite-card h4 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #2f5d3a;
+  /* Sage green */
+  margin-bottom: 0.5rem;
+}
+
+.invite-card h2 {
+  font-family: "Cinzel Decorative", serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #d4af37;
+  /* Gold */
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  word-wrap: break-word;
+}
+
+/* --- Location Label --- */
+.invite-location-label {
+  font-weight: 600;
+  color: #2f5d3a;
+  /* Sage green */
+  margin-top: 1rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+
+/* --- Invite Motto --- */
+.invite-motto {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  color: #f8c8dc;
+  /* Blush pink */
+  margin: 0.5rem 0;
+  word-wrap: break-word;
+}
+
+/* --- Malayalam Section --- */
+.invite-malayalam h4 {
+  font-family: "Noto Serif Malayalam", serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #2f5d3a;
+  /* Lavender */
+}
+
+.invite-malayalam h2 {
+  font-family: "Noto Serif Malayalam", serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #d4af37;
+  /* Gold for ceremony title */
+}
+
+.btn-reception {
+  background: linear-gradient(135deg, #d4af37, #f8c8dc);
+  color: #fff;
+  font-weight: 600;
+  padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1.2rem, 3vw, 1.5rem);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  white-space: nowrap;
+}
+
+.btn-reception:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #c9a24d, #f3b6d0);
+}
+
+.btn-reception:active {
+  transform: translateY(-2px);
+}
+
+.invite-calendar {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(0.3rem, 1.5vw, 0.5rem);
+  margin: 1rem 0;
+  padding: clamp(0.6rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1.2rem);
+  background: #fff8e7;
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.calendar-day {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: #2f5d3a;
+}
+
+.calendar-month {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  font-weight: 600;
+  color: #d4af37;
+  text-transform: uppercase;
+}
+
+.calendar-year {
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: #4f7d5c;
+}
+
+.invite-card h2 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #d4af37;
+  /* elegant gold */
+  margin-bottom: 1rem;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.invite-card p {
+  font-family: "Merriweather", serif;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.6;
+  color: #2f5d3a;
+  /* deep sage green */
+  margin: 0.8rem 0;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+/* =========================
+   RECEPTION INFO STYLES
+========================= */
+.reception-card {
+  background: linear-gradient(135deg, #fff8e7 0%, #ffffff 50%, #fef5e7 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 24px;
+  box-sizing: border-box;
+}
+
+.reception-title {
+  font-family: "Cinzel Decorative", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #d4af37;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.2);
+}
+
+.reception-text {
+  font-family: "Merriweather", serif;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: #4f7d5c;
+  margin: 1rem 0;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.card-title {
+  font-family: "Playfair Display", serif;
+  color: #d4af37;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-body {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+/* Invite location styling */
+.invite-location {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: #2f5d3a;
+  font-weight: 600;
+  margin: 1rem 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Malayalam text styling */
+.invite-malayalam {
+  padding: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1rem);
+  text-align: center;
+}
+
+.invite-malayalam p {
+  font-family: "Noto Serif Malayalam", serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  color: #4f7d5c;
+  margin: 1rem 0;
+  line-height: 1.8;
+}
+
+.invite-malayalam .invite-location {
+  font-family: "Noto Serif Malayalam", serif;
+}
+
+/* Heading style */
+.invite-heading-time {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #006400;
+  /* dark green shade */
+  text-align: center;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+/* Time style */
+.invite-time {
+  font-size: 1.2rem;
+  font-weight: 1000;
+  color: #2E8B57;
+  /* sea green shade */
+  text-align: center;
+  margin: 4px 0;
+}
+
+.scroll-indicator {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.scroll-indicator button {
+  background: #f603adf0;
+  /* green shade */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+
+
+/* Mobile optimization for reception */
+@media (max-width: 480px) {
+  .reception-card {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    margin: 0 0.5rem;
+  }
+
+  .reception-title {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+
+  .reception-text {
+    font-size: 0.95rem;
+  }
+
+  .invite-location {
+    font-size: 1.05rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .invite-malayalam {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .reception-card {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .reception-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .reception-card {
+    padding: 2.5rem 2rem;
+    max-width: 700px;
+  }
+
+  .reception-title {
+    font-size: 2.6rem;
+  }
+}
